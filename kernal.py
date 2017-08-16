@@ -47,27 +47,27 @@ import pandas as pd
 
 '''python version of command line'''
 from subprocess import check_output
-print(check_output(["ls", "../input"]).decode("utf8"))
+print(check_output(["ls", "../input/"]).decode("utf8"))
 
 
-train_df = pd.read_csv("train_2016.csv", parse_dates=["transactiondate"])      # parse_dates
+train_df = pd.read_csv('../input/train_2016_v2.csv', parse_dates=["transactiondate"])      # parse_dates
 
 
 train_df.shape      # show data frame shapes
 train_df.head()     # show top few data line
 
-'''
+
 # plotting
 plt.figure(figsize=(8,6))
 plt.scatter(range(train_df.shape[0]), np.sort(train_df.logerror.values))    # scatter plot (x, y, ...)
 plt.xlabel('index', fontsize=12)
 plt.ylabel('logerror', fontsize=12)
 plt.show()
-'''
+
 
 '''limit logerror values with top/bottom 1% percentile'''
-ulimit = np.percentile(train_df.logerror.values, 99)    # get percentile value
-llimit = np.percentile(train_df.logerror.values, 1)     # get percentile value
+ulimit = np.percentile(train_df.logerror.values, 99.95)    # get percentile value
+llimit = np.percentile(train_df.logerror.values, 0.05)     # get percentile value
 train_df['logerror'].ix[train_df['logerror']>ulimit] = ulimit       # set dataframe.ix[index] = value
 train_df['logerror'].ix[train_df['logerror']<llimit] = llimit       # set dataframe.ix[index] = value
 
